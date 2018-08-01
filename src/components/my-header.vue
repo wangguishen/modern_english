@@ -19,23 +19,17 @@ export default {
     XHeader,
   },
   props:{
-    isBack: Boolean,
     headObj: Object,
     rightObj: Object,
   },
   data(){
     return {
-      sideBarState: false,
     }
   },
   mounted (){
     let self = this;
   },
   methods: {
-    sideBarShow (){//点击显示侧栏
-      let self = this;
-      self.$store.commit('SET_PLACEMENT_VALUE',true);
-    },
     backWay (){
       let self = this;
       if(self.headObj.isBack){

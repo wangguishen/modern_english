@@ -7,6 +7,9 @@ import store from './store/store'
 import axios from 'axios'
 import './page/style/style.css'
 import './assets/iconfont.css'
+import  { ToastPlugin } from 'vux'
+
+Vue.use(ToastPlugin)
 
 Vue.config.productionTip = false
 

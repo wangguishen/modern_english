@@ -7,10 +7,11 @@
 	      	class="h-ipt-sty"
 	      	:show-clear="false"
 	      	type="tel"
-	      	is-type="china-mobile"
+	      	:is-type="chinaMobile"
 	      	placeholder="请输入手机号"
-	      	v-model="telCallObj.telPhone">
-	        <button slot="right" class="i-send-code">发送验证码</button>
+	      	v-model="telCallObj.telPhone"
+	      	ref="mobile">
+	        <button slot="right" class="i-send-code" :class="{'i-send-theme':isCodeShow}" :disabled="!isCodeShow" @click="sendVerCode">发送验证码</button>
 	      </x-input>
 	    </group>
 	    <group>
@@ -56,6 +57,7 @@ export default {
 		return {
 			status: '',
 			isRegisterShow: true,
+			isCodeShow: false,
 			headObj:{
         title: '注册',
         isBack: true,
@@ -63,6 +65,7 @@ export default {
       rightObj:{
         isMore: false,
       },
+      telPhone:'', //手机号码
       telCallObj: {
 				telPhone: '', //手机号码
 				telCode: '', //验证码
@@ -76,10 +79,12 @@ export default {
     let self = this;
     self.status = self.$route.params.id;
     if (self.status == 'register') {
+    	console.log("这是从注册页面进来的")
 			self.isRegisterShow = true;
 			self.headObj.title = '注册'
 			self.telCallObj.pwPlace = '请输入密码'
     } else if (self.status == 'forgetPass') {
+    	console.log("这是从找回密码页面进来的")
     	self.headObj.title = '找回密码'
 			self.isRegisterShow = false
 			self.telCallObj.pwPlace = '请输入新密码'
@@ -102,8 +107,29 @@ export default {
 		},
 		specification () {
 			let self = this;
+			self.$vux.toast.text('法律声明及隐私政策功能暂未开发')
 			console.log("这是法律说明书文档")
-		}
+		},
+		chinaMobile (val) {
+			let self = this;
+			let reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+			if (reg.test(val)) {
+				self.isCodeShow = true
+				return {
+	        valid: true
+	      }
+			} else {
+				self.isCodeShow = false
+				return {
+	        valid: false,
+	        msg: '请输入正确的手机号码'
+	      }
+			}
+		},
+		sendVerCode () {
+			this.isCodeShow = false
+			console.log(12313132131321)
+		},
 	}
 }
 </script>
@@ -135,6 +161,9 @@ export default {
     background: #CCC;
     color: #FFF;
     font-size: 1rem;
+	}
+	.g-from-box .h-ipt-sty .i-send-theme{
+		background: #FF2D4B;
 	}
 	.g-from-box .h-account-enter{
 		display: block;

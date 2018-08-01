@@ -68,7 +68,7 @@ export default {
   },
 	data () {
 		return {
-			isTelPhoneShow: false,
+			isTelPhoneShow: true,
 			imgUrl: 'static/image/note_logo.png', //图片路径
 			telCallObj: {
 				telPhone: '', //手机号码
@@ -93,9 +93,14 @@ export default {
 			})
 			console.log("这是个注册按钮")
 		},
-		accountEnter () { //账号密码登录
+		accountEnter () { //账号密码登录或者手机号登录按钮
 			let self = this;
 			self.isTelPhoneShow = !self.isTelPhoneShow
+			if (self.isTelPhoneShow) {
+				self.imgUrl = 'static/image/note_logo.png'
+			} else {
+				self.imgUrl = 'static/image/account_logo.png'
+			}
 			console.log("这是个账号密码登录按钮")
 		},
 		findPassword () { //找回密码
