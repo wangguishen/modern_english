@@ -25,17 +25,17 @@
 	    </group>
 	    <group class="g-group-top">
 				<x-input
-		      	class="h-ipt-sty h-code-sty"
-		      	:placeholder="telCallObj.pwPlace"
-		      	v-model="telCallObj.password">
-		      </x-input>
+	      	class="h-ipt-sty h-code-sty"
+	      	:placeholder="telCallObj.pwPlace"
+	      	v-model="telCallObj.password">
+	      </x-input>
 	    </group>
 	    <group>
 	      <x-input
-		      	class="h-ipt-sty h-code-sty"
-		      	placeholder="请输入再次密码"
-		      	v-model="telCallObj.verifyPassword">
-		      </x-input>
+	      	class="h-ipt-sty h-code-sty"
+	      	:placeholder="telCallObj.vpwPlace"
+	      	v-model="telCallObj.verifyPassword">
+	      </x-input>
 	    </group>
 	    <span class="h-account-enter">为保证安全，密码需包含数字与字母，长度不少于6位</span>
 	    <x-button class="h-btn-sure" type="warn" @click.native="btnSure">确定</x-button>
@@ -72,7 +72,9 @@ export default {
 				password: '', //密码
 				verifyPassword: '', //确认密码
 				pwPlace: '请输入密码', //密码提示语
+				vpwPlace: '请再次输入密码'
 			},
+			randomCode: ''
 		}
 	},
 	mounted () {
@@ -83,26 +85,54 @@ export default {
 			self.isRegisterShow = true;
 			self.headObj.title = '注册'
 			self.telCallObj.pwPlace = '请输入密码'
+			self.telCallObj.vpwPlace = '请再次输入密码'
     } else if (self.status == 'forgetPass') {
     	console.log("这是从找回密码页面进来的")
     	self.headObj.title = '找回密码'
 			self.isRegisterShow = false
 			self.telCallObj.pwPlace = '请输入新密码'
+			self.telCallObj.vpwPlace = '请再次输入新密码'
     }
-    console.log(self.isRegisterShow);
   },
 	methods: {
 		backWay () {
 			let self = this;
-			self.$router.push('/')
+			self.$router.back('/login')
 			console.log("返回")
 		},
 		btnSure () { //确定按钮
 			let self = this;
-			if (self.isRegisterShow) {
-				console.log("这是个注册确定按钮")
+			console.log(self.telCallObj.telCode)
+			console.log(self.randomCode)
+			let reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+			if (!reg.test(self.telCallObj.telPhone)) {
+				self.$vux.toast.text('请输入正确的手机号码')
+				return
+			} else if (self.telCallObj.telCode == '') {
+				self.$vux.toast.text('请输入验证码')
+				return
+			} else if (self.telCallObj.telCode != self.randomCode) {
+				self.$vux.toast.text('您输入的验证码不正确')
+				return
+			} else if (self.telCallObj.password == '') {
+				self.$vux.toast.text(self.telCallObj.pwPlace)
+				return
+			} else if (self.telCallObj.verifyPassword == '') {
+				self.$vux.toast.text(self.telCallObj.vpwPlace)
+				return
+			} else if (self.telCallObj.password != self.telCallObj.verifyPassword) {
+				self.$vux.toast.text('您两次输入的密码不一致，请重新输入')
+				return
 			} else {
-				console.log("这是个忘记密码确定按钮")
+				if (self.isRegisterShow) {
+					self.$vux.toast.text('注册成功')
+					self.$router.back('/')
+					console.log("这是个注册确定按钮")
+				} else {
+					self.$vux.toast.text('修改密码成功')
+					self.$router.back('/')
+					console.log("这是个忘记密码确定按钮")
+				}
 			}
 		},
 		specification () {
@@ -127,8 +157,14 @@ export default {
 			}
 		},
 		sendVerCode () {
-			this.isCodeShow = false
-			console.log(12313132131321)
+			let self = this;
+			self.randomCode = ''
+			self.telCallObj.telCode = ''
+			for (let i = 0; i < 4; i++) {
+				self.randomCode += Math.floor(Math.random()*10)
+			}
+			self.telCallObj.telCode = self.randomCode
+			self.isCodeShow = false
 		},
 	}
 }

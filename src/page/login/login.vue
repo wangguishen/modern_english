@@ -11,14 +11,15 @@
 			<template v-if="isTelPhoneShow">
 				<group>
 					<x-input
-		      	class="h-ipt-sty"
-		      	:show-clear="false"
-		      	type="tel"
-		      	is-type="china-mobile"
-		      	placeholder="请输入手机号"
-		      	v-model="telCallObj.telPhone">
-		        <button slot="right" class="i-send-code">发送验证码</button>
-		      </x-input>
+	      	class="h-ipt-sty"
+	      	:show-clear="false"
+	      	type="tel"
+	      	:is-type="chinaMobile"
+	      	placeholder="请输入手机号"
+	      	v-model="telCallObj.telPhone"
+	      	ref="mobile">
+	        	<button slot="right" class="i-send-code" :class="{'i-send-theme':isCodeShow}" :disabled="!isCodeShow" @click="sendVerCode">发送验证码</button>
+	      	</x-input>
 		    </group>
 		    <group>
 		      <x-input
@@ -61,6 +62,7 @@
 </template>
 
 <script>
+import store from '@/store/store'
 import { Group, XInput, XButton } from 'vux'
 export default {
 	components: {
@@ -68,33 +70,44 @@ export default {
   },
 	data () {
 		return {
+			isCodeShow: false, //验证码状态显示
 			isTelPhoneShow: true,
 			imgUrl: 'static/image/note_logo.png', //图片路径
 			telCallObj: {
 				telPhone: '', //手机号码
-				telCode: '', //验证码
+				telCode: '', //验证码发送时的值
 				telFooter: '账号密码登录'
 			},
 			accountObj: {
 				account: '', //账号
 				password: '', //密码
 				accFooter: '短信验证登录'
-			}
+			},
+			randomCode: '' //验证码生成时的值
 		}
 	},
+	mounted (){
+    let self = this;
+  },
 	methods: {
 		closePage () { //关闭按钮
 			console.log("这是个关闭按钮")
 		},
 		jumpRegisterPage () { //注册按钮
 			let self = this;
-			self.$router.push({
+			self.$router.go({
 				path:'/registerStatus/register'
 			})
 			console.log("这是个注册按钮")
 		},
 		accountEnter () { //账号密码登录或者手机号登录按钮
 			let self = this;
+			self.telCallObj.telPhone = ''
+			self.telCallObj.telCode = ''
+			self.accountObj.account = ''
+			self.accountObj.password = ''
+			self.randomCode = ''
+			self.isCodeShow = false
 			self.isTelPhoneShow = !self.isTelPhoneShow
 			if (self.isTelPhoneShow) {
 				self.imgUrl = 'static/image/note_logo.png'
@@ -105,19 +118,69 @@ export default {
 		},
 		findPassword () { //找回密码
 			let self = this;
-			self.$router.push({
+			self.$router.go({
 				path:'/registerStatus/forgetPass'
 			})
 			console.log("这是个找回密码按钮")
 		},
 		btnSure () { //确定登录
 			let self = this;
+			let reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
 			if (self.isTelPhoneShow) {
-				console.log("这是个手机号确定登录按钮")
+				if (!reg.test(self.telCallObj.telPhone)) {
+					self.$vux.toast.text('请输入正确的手机号码')
+					return
+				} else if (self.telCallObj.telCode == '') {
+					self.$vux.toast.text('请输入验证码')
+					return
+				} else if (self.telCallObj.telCode != self.randomCode) {
+					self.$vux.toast.text('您输入的验证码不正确')
+					return
+				} else {
+					store.dispatch('setTabbarStatus',0);
+					self.$router.go('/home')
+					console.log("这是个手机号确定登录按钮")
+				}
 			} else {
-				console.log("这是个账号密码确定登录按钮")
+				if (!reg.test(self.accountObj.account)) {
+					self.$vux.toast.text('请输入正确的手机号码')
+					return
+				} else if (self.accountObj.password == '') {
+					self.$vux.toast.text('请输入密码')
+					return
+				} else {
+					store.dispatch('setTabbarStatus',0);
+					self.$router.go('/home')
+					console.log("这是个账号密码确定登录按钮")
+				}
 			}
-		}
+		},
+		chinaMobile (val) { //手机号码验证规则，vux里面input写法
+			let self = this;
+			let reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+			if (reg.test(val)) {
+				self.isCodeShow = true
+				return {
+	        valid: true
+	      }
+			} else {
+				self.isCodeShow = false
+				return {
+	        valid: false,
+	        msg: '请输入正确的手机号码'
+	      }
+			}
+		},
+		sendVerCode () { //发送验证码  随机获取四位数字，保存两份  一份作为备注，防止验证码不对
+			let self = this;
+			self.randomCode = ''
+			self.telCallObj.telCode = ''
+			for (let i = 0; i < 4; i++) {
+				self.randomCode += Math.floor(Math.random()*10)
+			}
+			self.telCallObj.telCode = self.randomCode
+			self.isCodeShow = false
+		},
 	}
 }
 </script>
@@ -176,9 +239,12 @@ export default {
     height: 3rem;
     border: 0;
     border-radius: 0 3px 3px 0;
-    background: #FF2D4B;
+    background: #CCC;
     color: #FFF;
     font-size: 1rem;
+	}
+	.g-from-box .h-ipt-sty .i-send-theme{
+		background: #FF2D4B;
 	}
 	.h-btn-sure{
 		margin: 1.5rem 0;
