@@ -11,7 +11,7 @@
     <div class="g-grid">
     	<grid :show-vertical-dividers="true" :show-lr-borders="true">
     		<template v-for="item in gridList">
-    			<grid-item>
+    			<grid-item @click.native="jumpDetailPage(item)">
 				    <span class="grid-center">{{item.title}}</span>
 				    <span class="grid-center s-grid-value">{{item.value}}</span>
 				  </grid-item>
@@ -19,7 +19,22 @@
 			</grid>
     </div>
     <div class="g-cell">
-    	
+    	<group>
+	      <cell title="我的教材" is-link>
+	        <span class="iconfont grayicon" slot="icon" width="20">&#xe664;</span>
+	      </cell>
+	      <cell title="我的收藏" is-link>
+	        <span class="iconfont grayicon" slot="icon" width="20">&#xe66e;</span>
+	      </cell>
+	    </group>
+	    <group>
+	      <cell title="帮助与反馈" is-link>
+	        <span class="iconfont grayicon" slot="icon" width="20">&#xe60b;</span>
+	      </cell>
+	      <cell title="设置" is-link>
+	        <span class="iconfont grayicon" slot="icon" width="20">&#xe651;</span>
+	      </cell>
+	    </group>
     </div>
   </div>
 </template>
@@ -27,10 +42,10 @@
 <script>
 import backgroundImg from '../../../static/image/bg_img.png' 
 import titleImg from '../../../static/image/head_logo.jpg' 
-import { Grid, GridItem } from 'vux'
+import { Grid, GridItem, Group, Cell } from 'vux'
 export default {
 	components: {
-    Grid, GridItem
+    Grid, GridItem, Group, Cell
   },
 	data () {
 		return {
@@ -42,12 +57,15 @@ export default {
 			},
 			gridList: [
 				{
+					id: 1,
 					title: '钱包',
 					value: '10000.00'
 				},{
+					id: 2,
 					title: '订单',
 					value: '1'
 				},{
+					id: 3,
 					title: '优惠券',
 					value: '2'
 				}
@@ -58,7 +76,13 @@ export default {
     let self = this;
   },
 	methods: {
-
+		jumpDetailPage (item) {
+			let self = this;
+			if(item.id == 2){
+				self.$router.go('/myIndentCenter')
+			}
+			console.log(item)
+		},
 	},
 	filters: {
 		hidePartPhone: (value) => { //格式化state字段
@@ -104,5 +128,9 @@ export default {
 	}
 	.s-grid-value {
 		color: #000;
+	}
+	.grayicon{
+		display:block;
+		margin-right:1rem;
 	}
 </style>

@@ -16,6 +16,7 @@ import store from '@/store/store'
 import {getLocalStorage} from '@/util/storageUtil'
 import MyTabbar from './components/my-tabbar'
 import { ViewBox } from 'vux'
+import {verify} from '@/util/verify'
 export default {
   name: 'App',
   components: {
@@ -30,13 +31,12 @@ export default {
   },
   mounted (){
     let self = this;
-    self.transitionName = store.state.transitionName;
-    self.myTabbarShow = getLocalStorage('SET_MY_TABBAR_SHOW');
   },
   watch:{
   	'$route':{  
       handler:function(val,oldval){
       	let self = this;
+        verify(val.path)
       	self.transitionName = store.state.transitionName;
         self.myTabbarShow = store.state.myTabbarShow;
       },  

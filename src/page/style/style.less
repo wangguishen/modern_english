@@ -4,6 +4,7 @@ html,body{
 }
 html,body,#app,.main{
 	height: 100%;
+	font-family:Helvetica;
 }
 body,p{
 	padding: 0;
@@ -21,6 +22,22 @@ input::-webkit-input-placeholder{
 .rf{
 	float: right;
 }
+.dinb{
+	display: inline-block;
+}
+.dib{
+	display: block;
+}
+.grayColor{
+	color: #999;
+}
+.normRedColor{
+	color: #FF2D4B;
+}
+.normBgRedColor{
+	background: #FF2D4B !important;
+}
+
 .g-site{
 	position: relative;
 	overflow: auto;
@@ -44,4 +61,18 @@ input::-webkit-input-placeholder{
 .g-grid .weui-grid{
 	padding: .5rem;
 	background:#fff;
+}
+
+// cell
+.weui-cell {
+	font-size:16px;
+}
+// iconfont
+.iconfont.grayicon{
+	color: #999999;
+	font-size: 1.4rem;
+}
+// 退款弹框
+.g-dislog-box .weui-dialog{
+	border-radius: .5rem;
 }

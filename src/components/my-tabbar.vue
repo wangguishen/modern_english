@@ -91,13 +91,13 @@ export default {
     }
   },
   watch: {
-    '$route':{  
-      handler:function(val,oldval){
-        let self = this;
-        // console.log(store.state.tabbarStatus)
-      },  
-      deep:true//对象内部的属性监听，也叫深度监听  
-    }
+    // '$route':{  
+    //   handler:function(val,oldval){
+    //     let self = this;
+    //     // console.log(store.state.tabbarStatus)
+    //   },  
+    //   deep:true//对象内部的属性监听，也叫深度监听  
+    // }
   }
 }
 </script>

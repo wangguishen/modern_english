@@ -33,7 +33,7 @@ export default {
     backWay (){
       let self = this;
       if(self.headObj.isBack){
-          self.$emit('backWay','点击返回')
+        self.$emit('backWay','点击返回')
       }
     },
     finish(){
@@ -46,6 +46,9 @@ export default {
 }
 </script>
 <style scoped>
+  #header_box{
+    height: 46px;
+  }
 	.h-icon-back{
 		color: #FF2D4B;
 		font-size:1.4rem;

@@ -1,16 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {verify} from '@/util/verify'
 
 Router.prototype.go = function (link, param) {
   let store = this.app.$store;
-  verify(link)
   store.dispatch('setTransitionName','slide-left');
   this.push(link)
 }
 Router.prototype.back = function (link, param) {
   let store = this.app.$store;
-  verify(link.path)
   store.dispatch('setTransitionName','slide-right');
   this.push(link)
 }
@@ -51,5 +48,9 @@ export default new Router({
       path: '/myMessage', //我的信息
       component: resolve => require(['@/page/my-message/myMessage.vue'], resolve)
     },  
+    {
+      path: '/myIndentCenter', //我的订单中心
+      component: resolve => require(['@/page/my-message/myIndentCenter.vue'], resolve)
+    },
   ]
 })
