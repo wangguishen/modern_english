@@ -16,7 +16,7 @@ import store from '@/store/store'
 import {getLocalStorage} from '@/util/storageUtil'
 import MyTabbar from './components/my-tabbar'
 import { ViewBox } from 'vux'
-import {verify} from '@/util/verify'
+import {setLocalStorage} from '@/util/storageUtil'
 export default {
   name: 'App',
   components: {
@@ -36,12 +36,17 @@ export default {
   	'$route':{  
       handler:function(val,oldval){
       	let self = this;
-        verify(val.path)
+        if (val.path == '/home' || val.path == '/course' || val.path == '/learnCard' || val.path == '/shoppingTrolley' || val.path == '/myMessage') {
+          self.myTabbarShow = true
+        } else {
+          self.myTabbarShow = false
+        }
       	self.transitionName = store.state.transitionName;
-        self.myTabbarShow = store.state.myTabbarShow;
       },  
       deep:true//对象内部的属性监听，也叫深度监听  
     }
+  },
+  methods: {
   }
 }
 </script>

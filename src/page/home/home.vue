@@ -1,23 +1,32 @@
 <template>
-  <div>
-		<div v-for="item in 50">{{item}}111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+  <div id='home'>
+  	<home-header></home-header>
+  	<home-center></home-center>
+  	<home-footer></home-footer>
   </div>
 </template>
 
 <script>
-import MyTabbar from '../../components/my-tabbar'
+import HomeHeader from './component/HomeHeader'
+import HomeCenter from './component/HomeCenter'
+import HomeFooter from './component/HomeFooter'
 export default {
-	components: {
-    MyTabbar
-  },
-  data () {
+  name: 'Home',
+  data (){
   	return {
 
   	}
+  },
+  components:{
+  	HomeHeader,
+  	HomeCenter,
+  	HomeFooter
   }
 }
 </script>
 
-<style scoped>
-
+<style lang='less' scoped>
+	#home{
+		background: #a2918e26;
+	}
 </style>

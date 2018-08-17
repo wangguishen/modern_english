@@ -6,6 +6,9 @@ html,body,#app,.main{
 	height: 100%;
 	font-family:Helvetica;
 }
+body,#app,#coun-info{
+	height:100%;
+}
 body,p{
 	padding: 0;
 	margin: 0;
@@ -28,11 +31,20 @@ input::-webkit-input-placeholder{
 .dib{
 	display: block;
 }
+.c-align{
+	text-align: center;
+}
 .grayColor{
 	color: #999;
 }
+.blackColor{
+	color:#000;
+}
 .normRedColor{
 	color: #FF2D4B;
+}
+.bgWrite{
+	background-color: #fff;
 }
 .normBgRedColor{
 	background: #FF2D4B !important;
@@ -46,6 +58,7 @@ input::-webkit-input-placeholder{
 	margin-top: 46px;
 	overflow-y: scroll;
 }
+
 /* 头部信息 */
 #header_box .g-header.vux-header .vux-header-title{
 	color: #333;
@@ -67,12 +80,111 @@ input::-webkit-input-placeholder{
 .weui-cell {
 	font-size:16px;
 }
+.g-screen-group .vux-label{
+	font-size: .9rem;
+}
+.g-screen-group .weui-cell.vux-cell-no-border-intent:before{
+	left: 20px;
+}
+.g-screen-btn-box .weui-btn_mini{
+	line-height: 2;
+}
 // iconfont
 .iconfont.grayicon{
 	color: #999999;
 	font-size: 1.4rem;
 }
+// 红色按钮默认样式
+button.weui-btn_warn{
+	background-color: #FF2D4B;
+}
 // 退款弹框
 .g-dislog-box .weui-dialog{
 	border-radius: .5rem;
+	.t-btn-box{
+		text-align: center;
+	  color: #fff;
+	  // background-clip: padding-box;
+	  button.weui-btn{
+			border-radius: 0;
+			font-size: 15px;
+			height:3rem;
+			line-height: 3rem;
+		}
+		button.weui-btn:after{
+			border-radius: 0;
+		}
+	}
+}
+// cell样式表
+.g-deal-group {
+	.weui-cells{
+		margin: 0;
+		.weui-cell{
+			padding: 1rem;
+		}
+	}
+}
+.g-screen-group {
+	.weui-cells{
+		margin: 0;
+	}
+}
+
+/* 优惠券页面 */
+.content-area{
+	.vux-button-group {
+		padding: .5rem 0 1rem;
+		a.vux-button-tab-item-middle:after{
+			border-left: 1px solid #FF2D4B;
+		}
+	}
+}
+/* 单选样式 */
+.a-discount-box{
+	.vux-check-icon{
+		.weui-icon-success{
+			color: #FF2D4B;
+			&:before{
+				color: #FF2D4B;
+			}
+		}
+	}
+}
+
+/* 班班--首页部分 */
+#coun-info .footer .weui-grids{
+	background: #fff;
+}
+#coun-info .footer .weui-grids .weui-grid{
+	color:#666666;
+  text-align: center;
+  padding:0;
+  padding: .5rem 0;
+}
+#coun-info h1{
+  color: #151514;
+  font-weight: 800;
+}
+#coun-info .xheader .left-arrow:before{
+/*  border: 1px solid #d14c48;
+  border-width: 1px 0 0 1px;*/
+  border-color:#d14c48;
+}
+.weui-grid:active {
+  background-color: #49cabd !important;
+}
+.weui-grid:active span{
+	color:#fff;
+}
+
+#CounHeader .vux-header{
+	background-color: #fff;
+}
+#CounHeader .vux-header-title{
+  color: #2b2727;
+}
+#CounHeader .left-arrow:before{
+	border: 1px solid #e11328;
+  border-width: 1px 0 0 1px;
 }

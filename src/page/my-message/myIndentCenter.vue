@@ -4,48 +4,16 @@
   	<template v-for="item in orderList">
   		<my-orders-module :order="item" v-on:backClickBtn="backClickBtn"></my-orders-module>
   	</template>
-  	<div>
-      <x-dialog v-model="IsRefundShow" class="g-dislog-box">
-        <div class="p-top-box">
-          <img class="dib" src="../../../static/image/show_strip.png" alt="">
-          <div class="t-title-box">
-          	<div class='x-title'>退款申请</div>
-          	<div class='x-out-of-pocket'>
-          		实付款：<span class="normRedColor">￥{{refundObj.outOfPocketSum}}</span>
-          	</div>
-          	<div class='x-out-of-pocket'>
-          		订单编号：<span>{{refundObj.order_number}}</span><span class="normRedColor x-copy">复制</span>
-          	</div>
-          </div>
-          <div class="p-withhold-box grayColor">
-	        	<div class='x-title'>扣款</div>
-          	<div class='x-out-of-pocket'>
-          		发票税点：6% <span>￥{{refundObj.outOfPocketSum * 0.06}}</span>
-          	</div>
-          	<div class='x-out-of-pocket'>
-          		综合管理费：3% <span>￥{{refundObj.outOfPocketSum * 0.03}}</span>
-          	</div>
-          	<div class='x-out-of-pocket'>
-          		已上课次数：{{refundObj.haveClassNum}}*单价￥100 <span>￥{{refundObj.haveClassNum * 100}}</span>
-          	</div>
-	        </div>
-        </div>
-	        
-       <!--  <div @click="showToast=false">
-          <span class="vux-close"></span>
-        </div> -->
-      </x-dialog>
-    </div>
   </div>
 </template>
 
 <script>
 import MyHeader from '../../components/my-header'
+import {setLocalStorage} from '@/util/storageUtil'
 import MyOrdersModule from '../../components/my-orders-module'
-import { XDialog, XButton, TransferDomDirective as TransferDom } from 'vux'
 export default {
 	components: {
-    MyHeader, MyOrdersModule, XDialog, XButton
+    MyHeader, MyOrdersModule
   },
 	data () {
 		return {
@@ -62,7 +30,6 @@ export default {
 	        state: '0', //交易状态  0-->交易成功，1-->待付款，2-->已取消，3-->已退款，
 	        outOfPocketSum: '18000',
 					discountCoupon: '2000',
-
 	        order_content: [
 	          {
 	            img: '../../static/image/PET.png',
@@ -84,11 +51,19 @@ export default {
 	          {
 	            img: '../../static/image/PET.png',
 	            title: '托福精品课',
-	            price: '10000'
+	            price: '10000',
+	            outOfPocketSum: '9000',
+	            discountCoupon: '1000',
+	            haveClassNum: 2,
+	            orderState:'1'
 	          },{
 	            img: '../../static/image/PET.png',
 	            title: '托福精品课',
-	            price: '10000'
+	            price: '10000',
+	            outOfPocketSum: '8000',
+	            discountCoupon: '2000',
+	            haveClassNum: 3,
+	            orderState:'1'
 	          }
 	        ],
 	        order_time: '2018-08-07T07:59:04.222+0000'
@@ -115,28 +90,7 @@ export default {
 	        ],
 	        order_time: '2018-08-07T07:59:04.222+0000'
 	      },
-      ],
-      IsRefundShow: true,
-      refundObj: {
-        order_number: '201808101111', //订单号
-        state: '0', //交易状态  0-->交易成功，1-->待付款，2-->已取消，3-->已退款，
-        outOfPocketSum: '18000',
-				discountCoupon: '2000',
-				haveClassNum: 6,
-        order_content: [
-          {
-            img: '../../static/image/PET.png',
-            title: '托福精品课1',
-            price: '10000',
-            haveClassNum: 4
-          },{
-            img: '../../static/image/PET.png',
-            title: '托福精品课2',
-            price: '10000',
-            haveClassNum: 2
-          }
-        ]
-      }
+      ]
 		}
 	},
 	mounted (){
@@ -151,8 +105,12 @@ export default {
 		backClickBtn (state) {
 			let self = this;
 			self.refundObj = state
-			self.IsRefundShow = true;
-			console.log(state)
+			if (state.state == '0') {
+				state.state = '2'
+			} else if (state.state == '1') {
+				setLocalStorage('SET_PRESENT_MY_INDENT', state)
+				self.$router.go('/dealIndent')
+			}
 		}
 	}
 }
@@ -199,6 +157,19 @@ export default {
 			padding: .3rem 0 .3rem .5rem;
 			font-size: 14px;
 		}
+	}
+	.p-actual-refund{
+		text-align: center;
+		height: 3rem;
+		line-height: 3rem;
+		font-size: 15px;
+		.normRedColor{
+			font-size: 18px;
+			font-weight: bold;
+		}
+	}
+	.t-btn-box{
+		font-size: 15px;
 	}
 }
 </style>

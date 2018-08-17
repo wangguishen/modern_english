@@ -20,18 +20,18 @@
     </div>
     <div class="g-cell">
     	<group>
-	      <cell title="我的教材" is-link>
+	      <cell title="我的教材" @click.native="jumpBranchPage('1')" is-link>
 	        <span class="iconfont grayicon" slot="icon" width="20">&#xe664;</span>
 	      </cell>
-	      <cell title="我的收藏" is-link>
+	      <cell title="我的收藏" @click.native="jumpBranchPage('2')" is-link>
 	        <span class="iconfont grayicon" slot="icon" width="20">&#xe66e;</span>
 	      </cell>
 	    </group>
 	    <group>
-	      <cell title="帮助与反馈" is-link>
+	      <cell title="帮助与反馈" @click.native="jumpBranchPage('3')" is-link>
 	        <span class="iconfont grayicon" slot="icon" width="20">&#xe60b;</span>
 	      </cell>
-	      <cell title="设置" is-link>
+	      <cell title="设置" @click.native="jumpBranchPage('4')" is-link>
 	        <span class="iconfont grayicon" slot="icon" width="20">&#xe651;</span>
 	      </cell>
 	    </group>
@@ -63,11 +63,11 @@ export default {
 				},{
 					id: 2,
 					title: '订单',
-					value: '1'
+					value: '4'
 				},{
 					id: 3,
 					title: '优惠券',
-					value: '2'
+					value: '5'
 				}
 			]
 		}
@@ -80,9 +80,23 @@ export default {
 			let self = this;
 			if(item.id == 2){
 				self.$router.go('/myIndentCenter')
+			} else if(item.id == 3){
+				self.$router.go('/myDiscountCoupon')
 			}
 			console.log(item)
 		},
+		jumpBranchPage (num) {
+			let self = this;
+			if (num == '1') {
+				self.$vux.toast.text('我的教材暂未开发', 'middle')
+			}else if (num == '2') {
+				self.$vux.toast.text('我的收藏暂未开发', 'middle')
+			}else if (num == '3') {
+				self.$vux.toast.text('帮助与反馈暂未开发', 'middle')
+			}else if (num == '4') {
+				self.$vux.toast.text('设置暂未开发', 'middle')
+			}
+		}
 	},
 	filters: {
 		hidePartPhone: (value) => { //格式化state字段

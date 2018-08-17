@@ -33,12 +33,36 @@ export default new Router({
       component: resolve => require(['@/page/home/home.vue'], resolve)
     },
     {
+      path: '/counselor', //找顾问
+      component: resolve => require(['@/page/counselor/counselor.vue'], resolve)
+    },
+    {
+      path: '/counselorInfo', //顾问详情
+      component: resolve => require(['@/page/counselor/counselorInfo.vue'], resolve)
+    },
+    {
+      path: '/courseList', //全部课程列表页
+      component: resolve => require(['@/page/home/course/courseList.vue'], resolve)
+    },
+    {
       path: '/course', //课程
       component: resolve => require(['@/page/course/course.vue'], resolve)
     },
     {
+      path: '/courseDetail', //课程详情
+      component: resolve => require(['@/page/course/courseDetail.vue'], resolve)
+    },
+    {
       path: '/learnCard', //学迹卡
       component: resolve => require(['@/page/learn-card/learnCard.vue'], resolve)
+    },
+    {
+      path: '/experimentalList', //学迹卡实验班列表
+      component: resolve => require(['@/page/learn-card/experimentalList.vue'], resolve)
+    },
+    {
+      path: '/makeUpLessons', //学迹卡实验班申请补课
+      component: resolve => require(['@/page/learn-card/makeUpLessons.vue'], resolve)
     },
     {
       path: '/shoppingTrolley', //购物车
@@ -51,6 +75,14 @@ export default new Router({
     {
       path: '/myIndentCenter', //我的订单中心
       component: resolve => require(['@/page/my-message/myIndentCenter.vue'], resolve)
+    },
+    {
+      path: '/dealIndent', //我的订单支付
+      component: resolve => require(['@/page/my-message/dealIndent.vue'], resolve)
+    },
+    {
+      path: '/myDiscountCoupon', //我的优惠券
+      component: resolve => require(['@/page/my-message/myDiscountCoupon.vue'], resolve)
     },
   ]
 })
