@@ -51,7 +51,7 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
   #header_box{
     height: 46px;
   }

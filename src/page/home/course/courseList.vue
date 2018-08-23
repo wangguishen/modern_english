@@ -46,9 +46,11 @@
           </template>
         </group>
         <div class="bgWrite g-screen-btn-box">
-          <x-button mini plain type="warn">重置</x-button>
+          <x-button mini plain type="warn" @click.native="resetBtn">重置</x-button>
         </div>
-        <x-button @click.native="screenFraneShow = false" type="primary" class="g-screen-btn">确定</x-button>
+        <!-- <template v-if="screenFraneShow"> -->
+          <x-button @click.native="screenFraneShow = false" type="primary" class="g-screen-btn">确定</x-button>
+        <!-- </template> -->
       </popup>
     </div>
   </div>
@@ -325,6 +327,29 @@ export default {
       let self = this;
       self.$vux.toast.text('课程详情暂未开发', 'middle')
       console.log(state)
+    },
+    resetBtn () { //重置
+      let self = this;
+      console.log(self.screenList)
+      for(let item of self.screenList) {
+        if (item.hasOwnProperty('contentShow')) {
+          let res = []
+          if (item.hasOwnProperty('year')) {
+            res = ['year','month']
+          } else if (item.hasOwnProperty('jqPyatyi')) {
+            res = ['jqPyatyi', 'jqEnglish', 'sat', 'tf']
+          }
+          for (let even of res) {
+            item[even].data.forEach((key, val) => {
+              key.IsChecked = false;
+            })
+          }
+        } else {
+          item.data.forEach((key, val) => {
+            key.IsChecked = false;
+          })
+        }
+      }
     }
   }
 }

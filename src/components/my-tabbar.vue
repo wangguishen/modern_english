@@ -101,7 +101,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
   .g-my-tabbar .iconfont{
     color: #999;
   }

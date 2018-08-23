@@ -69,6 +69,10 @@ export default new Router({
       component: resolve => require(['@/page/shopping-trolley/shoppingTrolley.vue'], resolve)
     },
     {
+      path: '/confirmOrder', //购物车--确认订单
+      component: resolve => require(['@/page/shopping-trolley/confirmOrder.vue'], resolve)
+    },
+    {
       path: '/myMessage', //我的信息
       component: resolve => require(['@/page/my-message/myMessage.vue'], resolve)
     },  

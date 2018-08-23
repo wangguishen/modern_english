@@ -69,7 +69,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
   .g-order-box {
     margin: 1rem 0;
     font-size: 14px;

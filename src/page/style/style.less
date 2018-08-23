@@ -1,4 +1,4 @@
-html,body{
+html,body,.main{
   width: 100%;
 	overflow-x: hidden;
 }
@@ -57,6 +57,17 @@ input::-webkit-input-placeholder{
 .g-site .container_top{
 	margin-top: 46px;
 	overflow-y: scroll;
+}
+
+#app{
+	.weui-tab{
+		.weui-tab__panel{
+			padding:0;
+			.main-pad{
+				padding-bottom: 53px;
+			}
+		}
+	}
 }
 
 /* 头部信息 */
@@ -150,6 +161,30 @@ button.weui-btn_warn{
 			}
 		}
 	}
+}
+.l-num-box{
+	.weui-cells{
+		margin-top: 0;
+		&:before{
+			border: none;
+		}
+		&:after{
+			border: none;
+		}
+		.weui-cell{
+			padding: 0;
+			background-color: #FAFAFA;
+		}
+		.vux-number-input{
+			background-color: #FAFAFA;
+		}
+	}
+}
+/* 确认订单 */
+.g-coupon-box{
+  .vux-label{
+    font-size: .9rem;
+  }
 }
 
 /* 班班--首页部分 */

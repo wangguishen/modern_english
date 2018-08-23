@@ -55,12 +55,13 @@ export default {
     },
     selectChange (item) {
       let self = this;
+      console.log(item)
       item.IsChecked = !item.IsChecked
     }
   },
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .g-year{
   display: flex;
 }
