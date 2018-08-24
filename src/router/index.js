@@ -73,6 +73,10 @@ export default new Router({
       component: resolve => require(['@/page/shopping-trolley/confirmOrder.vue'], resolve)
     },
     {
+      path: '/paymentSuccess', //购物车--支付完成
+      component: resolve => require(['@/page/shopping-trolley/paymentSuccess.vue'], resolve)
+    },
+    {
       path: '/myMessage', //我的信息
       component: resolve => require(['@/page/my-message/myMessage.vue'], resolve)
     },  
@@ -85,7 +89,7 @@ export default new Router({
       component: resolve => require(['@/page/my-message/dealIndent.vue'], resolve)
     },
     {
-      path: '/myDiscountCoupon', //我的优惠券
+      path: '/myDiscountCoupon/:id', //我的优惠券
       component: resolve => require(['@/page/my-message/myDiscountCoupon.vue'], resolve)
     },
   ]

@@ -38,6 +38,7 @@
     <group class="g-coupon-box g-screen-group">
       <cell
         title="优惠券"
+        @click.native="jumpCoupon"
         is-link>
         <div>
           <span class="normRedColor">{{couponPrice | reducePrice}}</span>
@@ -65,19 +66,26 @@
             :class="{'normRedColor': payment.id == '1', 'wechatColor': payment.id == '2', 'alipayColor': payment.id == '3'}"
             v-html="payment.icon">
           </span>
-          <div>
-            <check-icon :value.sync="payment.paymentShow"></check-icon>
+          <div class="a-discount-box">
+            <check-icon :value.sync="payment.paymentShow" @click.native="changePayment(payment)"></check-icon>
           </div>
         </cell>
       </template>
     </group>
+    <div class="g-price-box">
+      <div class="s-total-box">
+        <span>实际应付</span>
+        <span class="normRedColor">￥{{totalPrices - couponPrice | priceInit}}</span>
+      </div>
+      <button class="s-settle-accounts" @click="settleAccount">确认下单</button>
+    </div>
   </div>
 </template>
 
 <script>
 import MyHeader from '@/components/my-header'
 import strip from '@/assets/images/show_strip.png'
-import {getLocalStorage} from '@/util/storageUtil'
+import {getLocalStorage, removeLocalStorage} from '@/util/storageUtil'
 import { Group, Cell, CheckIcon } from 'vux'
 export default {
   components: {
@@ -98,7 +106,7 @@ export default {
         telPhone: '18866668888'
       },
       orderList: [], //订单列表
-      couponPrice: '2100', //优惠券价格
+      couponPrice: 2100, //优惠券价格
       IsInvoice: false, //是否需要发票
       paymentList: [ //支付方式
         {
@@ -106,7 +114,7 @@ export default {
           icon: '&#xe626;',
           title: '余额支付', //余额支付
           subhead: '使用账户的余额进行支付',
-          paymentShow: false
+          paymentShow: true
         },{
           id: 2,
           icon: '&#xe611;',
@@ -120,24 +128,72 @@ export default {
           subhead: '使用账户的余额进行支付',
           paymentShow: false
         },
-      ]
+      ],
+      totalPrices: 0
   	}
+  },
+  watch: {
+    orderList: {
+      handler: function (val, old) {
+        let self = this;
+        let ind = 0;
+        val.forEach((item, index) => {
+          if (item.paymentShow) {
+            ind = index
+          } else {
+            item.paymentShow = false
+          }
+          self.totalPrices += item.price
+        })
+        console.log(444)
+      },
+      deep: true
+    }
   },
   mounted (){
     let self = this;
     self.orderList = getLocalStorage('SET_MY_ORDER_DETAIL', 'json')
-    console.log(self.orderList)
+    let couponObj = getLocalStorage('SET_MY_SELECT_COUPON', 'json')
+    if (couponObj) {
+      self.couponPrice = couponObj.money
+    }
   },
   methods: {
     backWay () {
       let self = this;
+      removeLocalStorage("SET_MY_SELECT_COUPON")
       self.$router.back('/shoppingTrolley')
+    },
+    jumpCoupon () { //跳转优惠券页面
+      let self = this;
+      self.$router.go({
+        path:'/myDiscountCoupon/shopping'
+      })
+    },
+    settleAccount () { //确认订单
+      let self = this;
+      let IsHavePayment = false;
+      self.paymentList.forEach((item, index) => {
+        if (item.paymentShow) IsHavePayment = true
+      })
+      if (!IsHavePayment) {
+        self.$vux.toast.text('请选择支付方式', 'middle')
+      } else{
+        self.$router.go('/paymentSuccess')
+      }
+    },
+    changePayment (payment) {
+      let self = this;
+      self.paymentList.forEach((item, index) => {
+        if (payment.id != item.id) {
+          item.paymentShow = false
+        }
+      })
     }
   },
   filters: {
     telPhoneStyle: (value) => {
       let val = value.substring(0, 3) + ' ' + value.substring(3, 7) + ' ' + value.substring(7, 11);
-      console.log(val)
       return val
     },
     classesFilter: (value) => { // 开班状态转换
@@ -286,10 +342,43 @@ export default {
     margin-right: .5rem;
   }
   .wechatColor{
-    color: green;
+    color: #19B73B;
   }
   .alipayColor{
-    color: blue;
+    color: #149CD5;
+  }
+}
+.g-price-box{
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #EAEAEA;
+  background: #FFF;
+  overflow: hidden;
+  .s-total-box{
+    width: 70%;
+    text-align: right;
+    padding-right: .5rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .normRedColor{
+      font-size: 1.2rem;
+    }
+  }
+  .s-settle-accounts{
+    width: 30%;
+    border: none;
+    background-color: #FF2D4B;
+    color: #FFF;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    font-weight: bold;
   }
 }
 </style>

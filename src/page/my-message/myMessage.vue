@@ -81,7 +81,10 @@ export default {
 			if(item.id == 2){
 				self.$router.go('/myIndentCenter')
 			} else if(item.id == 3){
-				self.$router.go('/myDiscountCoupon')
+				// self.$router.go('/myDiscountCoupon')
+				self.$router.go({
+					path:'/myDiscountCoupon/message'
+				})
 			}
 			console.log(item)
 		},

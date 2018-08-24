@@ -9,7 +9,7 @@
       </button-tab>
       <div v-show="unusedShow">
         <template v-for="item of unusedList">
-          <my-discount-coupon-module :discountCoupon="item" :styleSetting="styleSetting"></my-discount-coupon-module>
+          <my-discount-coupon-module :discountCoupon="item" :styleSetting="styleSetting" v-on:selectCoupon="selectCoupon"></my-discount-coupon-module>
         </template>
       </div>
       <div v-show="haveBeenUsedShow">
@@ -29,6 +29,7 @@
 <script>
 import MyHeader from '@/components/my-header'
 import MyDiscountCouponModule from '@/components/my-discount-coupon-module'
+import {getLocalStorage, setLocalStorage} from '@/util/storageUtil'
 import { ButtonTab, ButtonTabItem, Toast } from 'vux'
 export default {
   components: {
@@ -36,6 +37,7 @@ export default {
   },
   data () {
   	return {
+      argument: '',
 			headObj:{
         title: '优惠券',
         isBack: true,
@@ -129,12 +131,16 @@ export default {
   },
   mounted (){
     let self = this;
+    self.argument = self.$route.params.id;
   },
   methods: {
     backWay () {
       let self = this;
-      self.$router.back('/myMessage')
-      console.log("返回我的信息中心")
+      if (self.argument == 'message') {
+        self.$router.back('/myMessage')
+      } else if (self.argument == 'shopping') {
+        self.$router.back('/confirmOrder')
+      }
     },
     finish () { //点击说明文档按钮
       let self = this;
@@ -163,6 +169,14 @@ export default {
       self.styleSetting.IsHaveCheckShow = false;
       self.styleSetting.iconSty = '&#xe61f;'
     },
+    selectCoupon (val) {
+      let self = this;
+      console.log(val)
+      if (self.argument == 'shopping') {
+        setLocalStorage('SET_MY_SELECT_COUPON', val)
+        self.$router.back('/confirmOrder')
+      }
+    }
   }
 }
 </script>

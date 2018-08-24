@@ -46,6 +46,16 @@ export default {
       IsPitchOnShow: false,
   	}
   },
+  watch: {
+    discountCoupon: {
+      handler: function (val, old) {
+        if (val.IsPitchOnShow) {
+          this.$emit('selectCoupon', val)
+        }
+      },
+      deep: true
+    }
+  },
   mounted (){
     let self = this;
   },
